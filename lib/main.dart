@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:aqualoops_app/screens/auth/splash_screen.dart';
 import 'package:aqualoops_app/utils/app_colors.dart';
 
+
 void main() {
   runApp(const AquaLoopApp());
 }
