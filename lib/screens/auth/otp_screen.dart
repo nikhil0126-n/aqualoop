@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:aqualoops_app/utils/app_colors.dart';
-import 'package:aqualoops_app/screens/auth/login_screen.dart';
+import 'package:aqualoops_app/screens/auth/set_new_password_screen.dart';
 
 class OtpScreen extends StatefulWidget {
   const OtpScreen({super.key});
@@ -83,12 +83,12 @@ class _OtpScreenState extends State<OtpScreen> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('OTP verified successfully')),
                   );
-                  Navigator.pushAndRemoveUntil(
+                  // Verified → go set the new password.
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const LoginScreen(),
+                      builder: (context) => const SetNewPasswordScreen(),
                     ),
-                    (route) => false,
                   );
                 },
                 style: ElevatedButton.styleFrom(
