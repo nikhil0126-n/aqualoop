@@ -12,10 +12,6 @@ import 'package:aqualoops_app/models/user.dart';
 // ----------------------------- LOGGED IN USER ------------------------------
 User? loggedInUser;
 
-// Default delivery address used when the user hasn't typed one, so an order
-// can be placed with a single tap.
-const String defaultDeliveryAddress = 'Home, RK University, Rajkot, Gujarat';
-
 // --------------------------------- PRODUCTS --------------------------------
 List<Product> allProducts = [
   Product(

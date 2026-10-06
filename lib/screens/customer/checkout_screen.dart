@@ -14,6 +14,7 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
+  // The address is optional — an order can be placed without typing it.
   final addressController = TextEditingController();
   String paymentMethod = 'Cash on Delivery';
   bool placingOrder = false;
@@ -25,13 +26,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   void submitOrder() {
-    if (addressController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a delivery address')),
-      );
-      return;
-    }
-
     setState(() {
       placingOrder = true;
     });
@@ -111,7 +105,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               controller: addressController,
               maxLines: 2,
               decoration: const InputDecoration(
-                hintText: 'Enter your full delivery address',
+                hintText: 'Delivery address',
                 prefixIcon: Icon(Icons.location_on_outlined),
                 border: OutlineInputBorder(),
               ),

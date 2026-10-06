@@ -51,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
       email: email,
       phone: '9876543210',
       role: 'customer',
-      address: defaultDeliveryAddress,
+      address: '',
     );
 
     Navigator.pushReplacement(
