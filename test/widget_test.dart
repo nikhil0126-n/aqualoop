@@ -1,30 +1,32 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+// Basic smoke tests for the AquaLoop app.
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:aqualoops_app/main.dart';
+import 'package:aqualoops_app/screens/auth/login_screen.dart';
+import 'package:aqualoops_app/screens/auth/splash_screen.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('shows the splash screen on launch', (WidgetTester tester) async {
     await tester.pumpWidget(const AquaLoopApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    expect(find.byType(SplashScreen), findsOneWidget);
+    expect(find.text('AquaLoop'), findsOneWidget);
+    expect(find.text('Pure Water Delivery'), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // Flush the splash Timer so it isn't left pending at the end of the test.
+    await tester.pump(const Duration(seconds: 2));
+    await tester.pumpAndSettle();
+  });
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  testWidgets('navigates from splash to login after 2 seconds',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(const AquaLoopApp());
+
+    // Advance past the splash Timer.
+    await tester.pump(const Duration(seconds: 2));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(LoginScreen), findsOneWidget);
   });
 }
