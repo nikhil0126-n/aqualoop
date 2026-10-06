@@ -54,9 +54,11 @@ class _LoginScreenState extends State<LoginScreen> {
       address: '',
     );
 
-    Navigator.pushReplacement(
+    Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => const HomeScreen()),
+      // Clear the whole stack so Back can never reveal Login again.
+      (route) => false,
     );
   }
 

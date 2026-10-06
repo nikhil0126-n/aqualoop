@@ -18,6 +18,14 @@ class _OtpScreenState extends State<OtpScreen> {
   ];
 
   @override
+  void dispose() {
+    for (final controller in controllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     List<Widget> otpBoxes = [];
     for (int index = 0; index < 4; index++) {
@@ -47,68 +55,83 @@ class _OtpScreenState extends State<OtpScreen> {
     }
     return Scaffold(
       appBar: AppBar(title: const Text('OTP Verification')),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          children: [
-            const SizedBox(height: 40),
-            const Icon(
-              Icons.mark_email_read_outlined,
-              size: 80,
-              color: AppColors.primary,
-            ),
-            const SizedBox(height: 25),
-            const Text(
-              'Enter OTP',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            const Text(
-              'Enter the 4-digit OTP sent to '
-              'your registered mobile number.',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: AppColors.grey, height: 1.5),
-            ),
-            const SizedBox(height: 35),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: otpBoxes,
-            ),
-            const SizedBox(height: 30),
-            SizedBox(
-              width: double.infinity,
-              height: 52,
-              child: ElevatedButton(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('OTP verified successfully')),
-                  );
-                  // Verified → go set the new password.
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SetNewPasswordScreen(),
+      // Scrollable so the keyboard can never overflow the layout.
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              padding: const EdgeInsets.all(24),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight - 48),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.mark_email_read_outlined,
+                      size: 80,
+                      color: AppColors.primary,
                     ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-                child: const Text(
-                  'VERIFY OTP',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+                    const SizedBox(height: 25),
+                    const Text(
+                      'Enter OTP',
+                      style:
+                          TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Enter the 4-digit OTP sent to '
+                      'your registered mobile number.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: AppColors.grey, height: 1.5),
+                    ),
+                    const SizedBox(height: 35),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: otpBoxes,
+                    ),
+                    const SizedBox(height: 30),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 52,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('OTP verified successfully')),
+                          );
+                          // Verified → go set the new password.
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const SetNewPasswordScreen(),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                        child: const Text(
+                          'VERIFY OTP',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    TextButton(
+                        onPressed: () {}, child: const Text('Resend OTP')),
+                  ],
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            TextButton(onPressed: () {}, child: const Text('Resend OTP')),
-          ],
+            );
+          },
         ),
       ),
     );
