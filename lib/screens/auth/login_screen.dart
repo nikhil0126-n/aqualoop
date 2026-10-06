@@ -37,31 +37,13 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       isLoading = true;
     });
-    await Future.delayed(const Duration(milliseconds: 600));
+    await Future.delayed(const Duration(milliseconds: 400));
     if (!mounted) return;
 
+    // No credentials are required: tapping LOGIN goes straight to the
+    // customer side. Whatever was typed (if anything) is kept as a label.
     String email = emailController.text.trim();
-    String password = passwordController.text;
-
-    if (email.isEmpty || password.isEmpty) {
-      setState(() {
-        isLoading = false;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter email and password')),
-      );
-      return;
-    }
-
-    if (password.length < 6) {
-      setState(() {
-        isLoading = false;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Password must be at least 6 characters')),
-      );
-      return;
-    }
+    if (email.isEmpty) email = 'user@aqualoop.com';
 
     loggedInUser = User(
       id: 1,
@@ -69,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
       email: email,
       phone: '9876543210',
       role: 'customer',
-      address: 'Bengaluru, India',
+      address: defaultDeliveryAddress,
     );
 
     Navigator.pushReplacement(
@@ -104,14 +86,14 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(height: 35),
             CustomTextField(
               controller: emailController,
-              label: 'Email / Mobile',
+              label: 'Email / Mobile (optional)',
               prefixIcon: Icons.email_outlined,
               keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 20),
             CustomTextField(
               controller: passwordController,
-              label: 'Password',
+              label: 'Password (optional)',
               prefixIcon: Icons.lock_outline,
               obscureText: hidePassword,
               suffixIcon: IconButton(
