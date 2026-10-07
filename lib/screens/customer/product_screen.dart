@@ -9,8 +9,6 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  String selectedCategory = 'All';
-
   final List<Map<String, dynamic>> products = [
     {
       'name': '20L Mineral Water',
@@ -40,17 +38,9 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> filteredProducts = [];
-    if (selectedCategory == 'All') {
-      filteredProducts = products;
-    } else {
-      for (int i = 0; i < products.length; i++) {
-        Map<String, dynamic> product = products[i];
-        if (product['category'] == selectedCategory) {
-          filteredProducts.add(product);
-        }
-      }
-    }
+    // Search and category filters are disabled — always show all products.
+    final List<Map<String, dynamic>> filteredProducts = products;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -66,8 +56,9 @@ class _ProductScreenState extends State<ProductScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Search
+            // Search (display only — search is disabled)
             TextField(
+              enabled: false,
               decoration: InputDecoration(
                 hintText: 'Search water products',
                 prefixIcon: const Icon(Icons.search),
@@ -126,29 +117,24 @@ class _ProductScreenState extends State<ProductScreen> {
     );
   }
 
-  // Category Button
+  // Category Button (display only — tapping does not filter)
   Widget categoryButton(String category) {
-    bool isSelected = selectedCategory == category;
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedCategory = category;
-        });
-      },
-      child: Container(
-        margin: const EdgeInsets.only(right: 10),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary : Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppColors.primary),
-        ),
-        child: Text(
-          category,
-          style: TextStyle(
-            color: isSelected ? Colors.white : AppColors.primary,
-            fontWeight: FontWeight.bold,
-          ),
+    // 'All' always appears selected since all products are always shown.
+    final bool isSelected = category == 'All';
+
+    return Container(
+      margin: const EdgeInsets.only(right: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      decoration: BoxDecoration(
+        color: isSelected ? AppColors.primary : Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.primary),
+      ),
+      child: Text(
+        category,
+        style: TextStyle(
+          color: isSelected ? Colors.white : AppColors.primary,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );
