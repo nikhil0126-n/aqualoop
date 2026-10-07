@@ -56,9 +56,8 @@ class _ProductScreenState extends State<ProductScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Search (display only — search is disabled)
+            // Search (typing allowed, but search does not filter anything)
             TextField(
-              enabled: false,
               decoration: InputDecoration(
                 hintText: 'Search water products',
                 prefixIcon: const Icon(Icons.search),
