@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:aqualoops_app/screens/auth/splash_screen.dart';
 import 'package:aqualoops_app/utils/app_colors.dart';
+import 'package:aqualoops_app/utils/app_routes.dart';
 
 
 void main() {
@@ -21,6 +22,8 @@ class AquaLoopApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
         fontFamily: 'Roboto',
       ),
+      // Named routes (e.g. pushNamed(AppRoutes.login)) need this table.
+      onGenerateRoute: AppRoutes.onGenerateRoute,
       home: const SplashScreen(),
     );
   }
